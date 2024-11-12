@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
 import java.io.Serializable;
 
@@ -19,4 +20,7 @@ public class UserAddress implements Serializable {
     private String id;
     private String addressName;
     private String userId;
+
+    @TimeToLive
+    private Long ttl = 60L;
 }

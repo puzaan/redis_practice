@@ -16,6 +16,7 @@ public class UserAddressImp {
     }
 
     public UserAddress create(UserAddress userAddress){
+        userAddress.setTtl(120L);
         userAddressRepository.save(userAddress);
         return userAddress;
     }

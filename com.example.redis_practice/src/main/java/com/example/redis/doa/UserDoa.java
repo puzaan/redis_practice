@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.Duration;
 import java.util.Map;
 
 @Repository
@@ -15,6 +16,7 @@ public class UserDoa {
     private static final String KEY = "USER";
     public User save(User user){
         redisTemplate.opsForHash().put(KEY,user.getUserId(), user);
+        redisTemplate.expire(KEY, Duration.ofMinutes(5));
         return user;
     }
 
@@ -23,7 +25,12 @@ public class UserDoa {
     }
 
     public Map<Object,Object> findAll(){
-        return redisTemplate.opsForHash().entries(KEY);
+        Map<Object, Object> users = redisTemplate.opsForHash().entries(KEY);
+
+        if (!users.isEmpty()) {
+            redisTemplate.expire(KEY, Duration.ofMinutes(5));
+        }
+        return users;
 
     }
 
